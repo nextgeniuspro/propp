@@ -14,14 +14,14 @@ Propp is a lightweight, header-only C++ library that brings an efficient and fle
 - No recursion occurs when assigning or retrieving values within the setter or getter. For instance, if your getter modifies the underlying value (e.g., by multiplying it by 2), you can safely call the data access method inside the getter without triggering recursive calls.
 
 ```cpp
-        class Person {
+    class Person {
         PropertyRWG<int, GetterTypeValue<int>> Age; // <-- define getter returning data by value
 
         Person(const std::string& name)
             : Age(0, std::bind(&Person::GetAge, this)) { // <-- bind getter to the object}
 
         int GetAge() const { return Ag() * 2; } // <-- getter that returns data by value
-        };
+    };
 ```
 
 ### Known Limitations:
@@ -44,43 +44,43 @@ Propp is a lightweight, header-only C++ library that brings an efficient and fle
 
 - Declaration for read-only property
 ```cpp
-        PropertyRO<int> Age;
+    PropertyRO<int> Age;
 ```
 - Declaration for read-write property
 ```cpp
-        PropertyRW<int> Age;
+    PropertyRW<int> Age;
 ```
 - Declaration for read-write property with getter that returns data by value
 ```cpp
-        PropertyRWG<int, GetterTypeValue<int>> Age;
+    PropertyRWG<int, GetterTypeValue<int>> Age;
 ```
 - Declaration for read-only property with getter that returns data by reference (this behavior is default)
 ```cpp
-        PropertyROG<int, GetterTypeRef<int>> Age;
+    PropertyROG<int, GetterTypeRef<int>> Age;
 ```
 - Declaration for read-write property with setter that sets data by value
 ```cpp
-        PropertyRWS<int, SetterTypeValue<int>> Age;
+    PropertyRWS<int, SetterTypeValue<int>> Age;
 ```
 - Declaration for read-write property with setter that sets data by constant reference (this behavior is default)
 ```cpp
-        PropertyRWS<int, SetterTypeConstRef<int>> Age;
+    PropertyRWS<int, SetterTypeConstRef<int>> Age;
 ```
 - Declaration for read-only property with multitheading support
 ```cpp
-        PropertyROMT<int> Age;
+    PropertyROMT<int> Age;
 ```
 - Declaration for read-write property with multitheading support
 ```cpp
-        PropertyRWMT<int> Age;
+    PropertyRWMT<int> Age;
 ```
 - Declaration for read-write property with custom getter and setter and multitheading support
 ```cpp
-        PropertyRWGSMT<int> Age;
+    PropertyRWGSMT<int> Age;
 ```
 
 - RO, RW - read-only and read-write properties
-- G, S, GS - getter and setter or both. Empty means property doesn't have getter or setter support
+- G, S, GS - getter, setter or both. Empty means property doesn't have getter or setter support
 - MT - if specified, property will be thread-safe
 
 ## How To Integrate with cmake
