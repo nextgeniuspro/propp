@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include <vector>
+#include <algorithm>
 
 using namespace propp;
 
