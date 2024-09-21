@@ -20,7 +20,7 @@ Propp is a lightweight, header-only C++ library that brings an efficient and fle
         Person(const std::string& name)
             : Age(0, std::bind(&Person::GetAge, this)) { // <-- bind getter to the object}
 
-        int GetAge() const { return Ag() * 2; } // <-- getter that returns data by value
+        int GetAge() const { return Age() * 2; } // <-- custom getter that multiplies the value by 2
     };
 ```
 
