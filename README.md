@@ -1,6 +1,46 @@
 # propp
 Propp is a lightweight, header-only C++ library that brings an efficient and flexible property system to C++. Unlike traditional getter and setter methods commonly used in object-oriented programming, Propp enables C++ developers to work with properties in a more intuitive and Python-like manner, improving code readability and maintainability.
 
+## Example
+
+```cpp
+    class Person {
+    public:    
+        PropertyRO<std::string> Name;
+        PropertyRWSMT<int> Age;
+        PropertyROG<std::string, GetterTypeValue<std::string>> Address; // We declare getter that returns string by value
+        
+        Person(const std::string& name)
+            : Name(name)
+            , Age(0, std::bind(&Person::SetAge, this, std::placeholders::_1))
+            , Address("123 Main St Mega City MS 12345", std::bind(&Person::GetAddress, this))
+        {
+        }
+        
+        // For properties with custom getter and setter, we need to define copy constructor
+        Person(const Person& other)
+            : Name(other.Name())
+            , Age(other.Age(), std::bind(&Person::SetAge, this, std::placeholders::_1))
+            , Address(other.Address.GetRaw(), std::bind(&Person::GetAddress, this)) // Because we declared getter that returns string by value, we need to use GetRaw() to get the initial value
+        {
+        }
+
+    private:    
+        void SetAge(int value) {
+            // Don't worry, inside setter you can assign value back with no recursion issue (if you do this in the same thread)
+            Age = std::clamp(value, 0, 150);
+        }
+
+        // This getter returns initial address from property and appends predefined country to it
+        std::string GetAddress() {
+            static std::string predefinedCountry = " USA";
+
+            // Don't worry that we call Address() inside getter, it won't cause recursion issue, next call will return the underlying value
+            return Address() + predefinedCountry;
+        }
+    };
+```
+
 ## Key Features:
 
 - Header-Only Design: No need to compile a separate library or link against external dependencies. Propp is a single header file that can be included in your project, making it easy to integrate and use.
@@ -40,7 +80,7 @@ Propp is a lightweight, header-only C++ library that brings an efficient and fle
         }
 ```
 
-### Examples:
+### Usage Examples:
 
 - Declaration for read-only property
 ```cpp
